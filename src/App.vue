@@ -1,17 +1,23 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <div class="app">
+    <AppHeader></AppHeader>
+    <div class="app-contents">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-  name: "App",
+import AppHeader from "@/components/common/AppHeader.vue";
 
-  data: () => ({
-    //
-  }),
+export default {
+  components: {
+    AppHeader,
+  },
 };
 </script>
+
+<style>
+@import "./css/common.css";
+@import "./css/reset.css";
+</style>
