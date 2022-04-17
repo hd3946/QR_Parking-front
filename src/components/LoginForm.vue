@@ -2,7 +2,12 @@
   <div class="contents">
     <div class="form-wrapper form-wrapper-sm">
       <div class="image-wrapper">
-        <img class="imgMain" src="../assets/sana.gif" alt="Main image" />
+        <router-link to="/">
+          <img class="imgMain" src="../assets/sana.gif" alt="Main image" />
+          <img
+            src="https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=http://0.0.0.0:8080/$2b$12$rbDCzUJMc88mID4ulkMNp.ZWViNfMXlR7ZmMn03dVW.I4ObbTlTe6/profile"
+          />
+        </router-link>
       </div>
       <form @submit.prevent="submitForm" class="form">
         <div>
@@ -52,16 +57,16 @@
 </template>
 
 <script>
-import { validateEmail } from "@/utils/validation";
+import { validateEmail } from '@/utils/validation';
 
 export default {
   data() {
     return {
       // form values
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       // log
-      logMessage: "",
+      logMessage: '',
     };
   },
   computed: {
@@ -74,11 +79,11 @@ export default {
       try {
         // 비즈니스 로직
         const userData = {
-          username: this.username,
+          emailid: this.username,
           password: this.password,
         };
-        await this.$store.dispatch("LOGIN", userData);
-        this.$router.push("/main");
+        await this.$store.dispatch('LOGIN', userData);
+        this.$router.push('/main');
       } catch (error) {
         // 에러 핸들링할 코드
         console.log(error.response.data);
@@ -88,8 +93,8 @@ export default {
       }
     },
     initForm() {
-      this.username = "";
-      this.password = "";
+      this.username = '';
+      this.password = '';
     },
   },
 };

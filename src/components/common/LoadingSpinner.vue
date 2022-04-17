@@ -20,7 +20,7 @@ export default {};
   height: 50px;
   border-radius: 50%;
   border: 5px solid #e0e0e0;
-  border-bottom: 5px solid #fe9616;
+  border-bottom: 5px solid #ee6cee;
   animation: spin 1s linear infinite;
   position: relative;
 }

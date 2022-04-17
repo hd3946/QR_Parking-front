@@ -1,5 +1,5 @@
-import axios from "axios";
-import { setInterceptors } from "./common/interceptors";
+import axios from 'axios';
+import { setInterceptors } from './common/interceptors';
 
 function createInstance() {
   return axios.create({
@@ -16,4 +16,5 @@ function createInstanceWithAuth(url) {
 }
 
 export const instance = createInstance();
-export const posts = createInstanceWithAuth("posts");
+export const posts = createInstanceWithAuth('posts');
+export const qrprofile = createInstanceWithAuth('qr');

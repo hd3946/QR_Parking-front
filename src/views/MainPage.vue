@@ -1,17 +1,16 @@
 <template>
   <div>
-    <div class="main list-container contents">
-      <h1 class="page-header">Today I Learned</h1>
-      <LoadingSpinner v-if="isLoading"></LoadingSpinner>
-      <ul v-else>
+    <!-- <LoadingSpinner v-if="isLoading"></LoadingSpinner> -->
+    <!-- <ul>
         <PostListItem
           v-for="postItem in postItems"
           :key="postItem._id"
           :postItem="postItem"
           @refresh="fetchData"
         ></PostListItem>
-      </ul>
-    </div>
+      </ul> -->
+    <ProfileInfo />
+
     <router-link to="/add" class="create-button">
       <i class="ion-md-add"></i>
     </router-link>
@@ -19,14 +18,16 @@
 </template>
 
 <script>
-import PostListItem from '@/components/posts/PostListItem.vue';
+//import PostListItem from '@/components/posts/PostListItem.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
+import ProfileInfo from '@/components/contacts/ProfileInfo.vue';
 import { fetchPosts } from '@/api/posts';
 
 export default {
   components: {
-    PostListItem,
-    LoadingSpinner,
+    ProfileInfo,
+    // PostListItem,
+    // LoadingSpinner,
   },
   data() {
     return {
@@ -43,7 +44,7 @@ export default {
     },
   },
   created() {
-    this.fetchData();
+    //this.fetchData();
   },
 };
 </script>
