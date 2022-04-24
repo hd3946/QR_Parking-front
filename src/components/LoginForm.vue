@@ -2,7 +2,7 @@
   <div class="contents">
     <div class="form-wrapper form-wrapper-sm">
       <div class="image-wrapper">
-        <router-link to="/">
+        <router-link to="/makeqr">
           <img class="imgMain" src="../assets/sana.gif" alt="Main image" />
           <img
             src="https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=http://0.0.0.0:8080/$2b$12$rbDCzUJMc88mID4ulkMNp.ZWViNfMXlR7ZmMn03dVW.I4ObbTlTe6/profile"

@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { setInterceptors } from './common/interceptors';
 
+axios.defaults.baseURL = 'https://qrparking.herokuapp.com/';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+
 function createInstance() {
   return axios.create({
     baseURL: process.env.VUE_APP_API_URL,
