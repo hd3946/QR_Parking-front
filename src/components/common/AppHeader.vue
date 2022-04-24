@@ -2,7 +2,7 @@
   <header>
     <div>
       <router-link to="/" class="logo">
-        QR-Test
+        노-브레이끼
         <span v-if="isUserLogin">by {{ $store.state.username }}</span>
       </router-link>
     </div>
@@ -40,25 +40,25 @@ export default {
 
 <style scoped>
 .username {
-  color: white;
+  color: black;
 }
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #927dfc;
+  background-color: yellow;
   z-index: 2;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 3px 10px rgba(150, 184, 47, 0.05);
 }
 a {
-  color: #dedede;
+  color: pink;
   font-size: 18px;
 }
 a.logo {
   font-size: 30px;
   font-weight: 900;
-  color: white;
+  color: black;
 }
 .logo > span {
   font-size: 14px;
@@ -76,7 +76,7 @@ a.logo {
   font-size: 14px;
 }
 a.router-link-exact-active {
-  color: white;
+  color: black;
   font-weight: bold;
 }
 </style>

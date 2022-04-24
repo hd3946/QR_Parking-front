@@ -1,8 +1,16 @@
 <template>
   <div class="contents">
     <div class="row my-3 align-items-center">
-      <div class="col-4">
+      <div class="col-4" @click="uplodeImage()">
         <img src="../../assets/ddd.jpg" class="profile-img" alt="hello" />
+        <input
+          class="form-control"
+          type="file"
+          id="imageUpload"
+          accept="image/*"
+          @change="fileUpload($event)"
+          hidden
+        />
       </div>
       <div class="col-auto">
         <h4 class="font-weight-bold">{{ username }} 님의 계정</h4>
@@ -14,8 +22,6 @@
         </button>
       </div>
     </div>
-    <!-- <span>게시글 0 팔로워 30 팔로우 20</span>
-        <p>안녕하세요~!</p> -->
     <hr />
     <div class="row">
       <div class="col text-center" @click="callUser()">
@@ -30,7 +36,7 @@
         <h6 class="font-weight-bold">메시지 전달</h6>
         <img src="../../assets/mail_640.png" class="img-thumbnail" alt="..." />
       </div>
-      <div class="col text-center" @click="sendSMS()">
+      <div class="col text-center" @click="sendKaKao()">
         <h6 class="font-weight-bold">팔로우</h6>
         <img
           src="../../assets/follow_640.png"
@@ -40,16 +46,19 @@
       </div>
     </div>
     <div><ModalSMS v-if="this.message !== ''" :Messages="message" /></div>
+    <div><ModalImage /></div>
   </div>
 </template>
 
 <script>
 import { seeProfile } from '@/api/qrprofile';
 import ModalSMS from '@/components/common/ModalSMS';
+import ModalImage from '@/components/common/ModalProfileImage';
 
 export default {
   components: {
     ModalSMS,
+    ModalImage,
   },
   data() {
     return {
@@ -67,17 +76,20 @@ export default {
     };
   },
   methods: {
+    uplodeImage() {
+      this.$bvModal.show('modal-profileimage');
+      //document.getElementById('imageUpload').click();
+    },
     callUser() {
       alert('전화 걸기');
       document.location.href = `tel:${this.phonenumber}`;
     },
     sendSMS() {
       if (this.isLoading) this.$bvModal.show('modal-sms');
-      // alert('메시지 전송');
     },
     sendKaKao() {
-      alert('메시지 전송');
-      document.location.href = `sms:${this.phonenumber}`;
+      alert('개발중~!');
+      //document.location.href = `sms:${this.phonenumber}`;
     },
     setMessage(text) {
       if (text != '') this.message = `${text}차량좀 빼주시겠어용~💕`;
