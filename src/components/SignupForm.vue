@@ -1,6 +1,6 @@
 <template>
-  <div class="contents">
-    <div class="form-wrapper form-wrapper-sm">
+  <div>
+    <div class="form-wrapper">
       <div class="d-grid gap-2">
         <button class="btn btn-link" type="submit">
           <img
@@ -11,8 +11,8 @@
         </button>
       </div>
       <hr />
-      <form @submit.prevent="submitForm" class="form">
-        <div class="form-floating">
+      <form class="form">
+        <div class="form-floating mb-3">
           <input
             type="email"
             class="form-control"
@@ -23,7 +23,7 @@
           />
           <label for="floatingInput">이메일 주소</label>
         </div>
-        <div class="form-floating">
+        <div class="form-floating mb-3">
           <input
             type="password"
             class="form-control"
@@ -35,7 +35,19 @@
           <label for="floatingPassword">비밀번호</label>
         </div>
 
-        <div class="form-floating">
+        <div class="form-floating mb-3">
+          <input
+            type="password"
+            class="form-control"
+            id="floatingconfirmPassword"
+            placeholder="비밀번호"
+            v-model="confirmPassword"
+            required
+          />
+          <label for="floatingconfirmPassword">비밀번호 확인</label>
+        </div>
+
+        <div class="form-floating mb-3">
           <input
             type="text"
             class="form-control"
@@ -47,19 +59,7 @@
           <label for="floatingNickname">프로필 이름</label>
         </div>
 
-        <div class="form-floating">
-          <input
-            type="text"
-            class="form-control"
-            id="floatingPhonenumber"
-            placeholder="Phonenumber"
-            v-model="phonenumber"
-            required
-          />
-          <label for="floatingPhonenumber">휴대폰 번호</label>
-        </div>
-
-        <div class="form-floating">
+        <div class="form-floating mb-3">
           <input
             type="text"
             class="form-control"
@@ -67,20 +67,70 @@
             placeholder="Carnumber"
             v-model="carnumber"
           />
-          <label for="floatingCarnumber">차량 번호</label>
-        </div>
-
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary">회원 가입</button>
+          <label for="floatingCarnumber">차량 번호(선택 사항)</label>
         </div>
       </form>
-      <p class="log">{{ logMessage }}</p>
+
+      <div class="input-group input-group-lg mb-3" :disabled="verifycheck">
+        <span class="input-group-text" id="basic-addon1">
+          <b-icon icon="phone"></b-icon>
+        </span>
+
+        <input
+          type="tel"
+          class="form-control"
+          placeholder="휴대폰 번호"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+          :style="[!verifycheck ? onPhoneClass : outPhoneClass]"
+          v-model="phonenumber"
+        />
+        <button
+          type="submit"
+          class="btn btn-outline-secondary"
+          @click="submitReceiveVerify"
+        >
+          인증
+        </button>
+      </div>
+
+      <div
+        class="input-group input-group-lg mb-3"
+        :hidden="verifyhide"
+        :disabled="verifycheck"
+      >
+        <input
+          type="text"
+          class="form-control"
+          placeholder="인증 번호"
+          aria-describedby="basic-addon1"
+          v-model="verificationcode"
+        />
+        <button
+          type="submit"
+          class="btn btn-outline-secondary"
+          @click="submitSendVerifyCheck"
+        >
+          확인
+        </button>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary" @click="submitForm">
+          회원 가입
+        </button>
+      </div>
+
+      <p class="d-grid gap-2" style="color: #ff4057; text-align: center">
+        {{ logMessage }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 import { registerUser } from '@/api/auth';
+import { receiveVerify, sendVerifyCheck } from '@/api/verify';
 import { validateEmail } from '@/utils/validation';
 
 export default {
@@ -89,11 +139,18 @@ export default {
       // form values
       emailid: '',
       password: '',
+      confirmPassword: '',
       nickname: '',
       phonenumber: '',
       carnumber: '',
       // log
       logMessage: '',
+      //verify
+      verifyhide: true,
+      verificationcode: '',
+      verifycheck: false,
+      onPhoneClass: { color: 'pink' },
+      outPhoneClass: { color: 'red' },
     };
   },
   computed: {
@@ -102,7 +159,39 @@ export default {
     },
   },
   methods: {
+    //서버로 휴대폰번호 전송 인증번호받기
+    async submitReceiveVerify() {
+      const userData = {
+        phonenumber: this.phonenumber,
+      };
+      const status = await receiveVerify(userData);
+      if (status) {
+        this.verifyhide = false;
+      } else {
+        this.logMessage = 'error 발생';
+      }
+    },
+    //서버로 인증번호 전송
+    async submitSendVerifyCheck() {
+      const userData = {
+        verificationcode: this.verificationcode,
+      };
+      const status = await sendVerifyCheck(userData);
+      if (status) {
+        this.verifycheck = true;
+      } else {
+        this.logMessage = 'error 발생';
+      }
+    },
     async submitForm() {
+      if (this.password !== this.confirmPassword) {
+        this.logMessage = 'Password does not match.';
+        return;
+      }
+      if (this.verifycheck) {
+        this.logMessage = '휴대폰 인증을 해주세요~!';
+        return;
+      }
       const userData = {
         emailid: this.emailid,
         password: this.password,
@@ -123,6 +212,7 @@ export default {
       this.nickname = '';
       this.phonenumber = '';
       this.carnumber = '';
+      thi.verifycheck = false;
     },
   },
 };

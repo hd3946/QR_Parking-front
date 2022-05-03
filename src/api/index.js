@@ -22,3 +22,4 @@ function createInstanceWithAuth(url) {
 export const instance = createInstance();
 export const posts = createInstanceWithAuth('posts');
 export const qrprofile = createInstanceWithAuth('qr');
+export const verify = createInstanceWithAuth('verify');

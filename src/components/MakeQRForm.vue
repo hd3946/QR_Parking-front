@@ -8,6 +8,9 @@
         </div>
         <button type="submit" class="btn btn-primary">만들기</button>
       </form>
+      <button type="submit" class="btn btn-primary" @click="submitverify">
+        test
+      </button>
       <p class="log">{{ logMessage }}</p>
     </div>
   </div>
@@ -15,6 +18,7 @@
 
 <script>
 import { makeQR } from '@/api/qrprofile';
+import { test } from '@/api/verify';
 
 export default {
   data() {
@@ -38,6 +42,10 @@ export default {
     },
     initForm() {
       this.username = '';
+    },
+    async submitverify() {
+      console.log('test');
+      const { data } = await test();
     },
   },
 };
