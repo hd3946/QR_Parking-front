@@ -43,9 +43,7 @@ export default {
       this.postItems = data.posts;
     },
   },
-  created() {
-    //this.fetchData();
-  },
+  created() {},
 };
 </script>
 

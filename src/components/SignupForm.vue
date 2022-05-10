@@ -168,7 +168,7 @@ export default {
       if (status) {
         this.verifyhide = false;
       } else {
-        this.logMessage = 'error 발생';
+        this.logMessage = '휴대폰 번호 error 발생';
       }
     },
     //서버로 인증번호 전송
@@ -180,7 +180,7 @@ export default {
       if (status) {
         this.verifycheck = true;
       } else {
-        this.logMessage = 'error 발생';
+        this.logMessage = '인증 error 발생';
       }
     },
     async submitForm() {
@@ -212,7 +212,8 @@ export default {
       this.nickname = '';
       this.phonenumber = '';
       this.carnumber = '';
-      thi.verifycheck = false;
+      this.verifyhide = true;
+      this.verifycheck = false;
     },
   },
 };

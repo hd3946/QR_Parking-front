@@ -13,7 +13,7 @@
         />
       </div>
       <div class="col-auto">
-        <h4 class="font-weight-bold">{{ username }} 님의 계정</h4>
+        <h4 class="font-weight-bold">{{ userData.user.nickname }} 님의 계정</h4>
         <p class="fs-6">안녕하세요~</p>
       </div>
       <div class="col-auto">
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { seeProfile } from '@/api/qrprofile';
 import ModalSMS from '@/components/common/ModalSMS';
 import ModalImage from '@/components/common/ModalProfileImage';
 
@@ -60,13 +59,14 @@ export default {
     ModalSMS,
     ModalImage,
   },
+  props: {
+    userData: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      // form values
-      username: '',
-      password: '',
-      phonenumber: '',
-      carnumber: '',
       //메시지 전달
       message: '',
       // log
@@ -82,7 +82,7 @@ export default {
     },
     callUser() {
       alert('전화 걸기');
-      document.location.href = `tel:${this.phonenumber}`;
+      document.location.href = `tel:${this.userData.user.phonenumber}`;
     },
     sendSMS() {
       if (this.isLoading) this.$bvModal.show('modal-sms');
@@ -96,26 +96,38 @@ export default {
       else this.message = '차좀 빼주시겠어용~💕';
     },
   },
-  async created() {
-    const id = this.$route.params.id;
-    const { data } = await seeProfile(id);
-    console.log(data, id, data.user.carnumber);
-    this.title = data.title;
-    this.contents = data.contents;
-    if (data.exist) {
-      //유저등록된 상태
-      this.username = data.user.nickname;
-      this.phonenumber = data.user.phonenumber;
-      this.setMessage(data.user.carnumber);
-      this.$store.commit('setUserInfo', data.user);
-      //this.$router.push(`/login`); //${id}
+  created() {
+    //유저등록된 상태
+    if (this.userData.exist) {
+      this.setMessage(this.userData.user.carnumber);
+      this.$store.commit('setUserInfo', this.userData.user);
     } else {
       //유저등록안된 상태 => 유저등록화면
-      this.$store.commit('setQRurl', id);
+      //this.$store.commit('setQRurl', id);
       this.$router.push(`/signup`);
     }
     this.isLoading = true;
   },
+  // async created() {
+  //   // const id = this.$route.params.id;
+  //   // const { data } = await seeProfile(id);
+  //   console.log(this.userData);
+  //   // this.title = data.title;
+  //   // this.contents = data.contents;
+  //   // if (data.exist) {
+  //   //   //유저등록된 상태
+  //   //   this.username = data.user.nickname;
+  //   //   this.phonenumber = data.user.phonenumber;
+  //   //   this.setMessage(data.user.carnumber);
+  //   //   this.$store.commit('setUserInfo', data.user);
+  //   //   //this.$router.push(`/login`); //${id}
+  //   // } else {
+  //   //   //유저등록안된 상태 => 유저등록화면
+  //   //   this.$store.commit('setQRurl', id);
+  //   //   this.$router.push(`/signup`);
+  //   // }
+  //   // this.isLoading = true;
+  // },
 };
 </script>
 
