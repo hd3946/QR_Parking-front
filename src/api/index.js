@@ -18,6 +18,7 @@ function createInstanceWithAuth(url) {
   });
   return setInterceptors(instance);
 }
+console.log('현재 APP-URL', process.env.VUE_APP_API_URL);
 
 export const instance = createInstance();
 export const auth = createInstanceWithAuth('auth');
