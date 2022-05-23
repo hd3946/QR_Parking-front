@@ -1,15 +1,19 @@
 // 로그인, 회원 가입, (ex) 회원 탈퇴
-import { instance } from './index';
+import { auth } from './index';
 
-const authURL = 'auth';
 // 회원가입 API
 function registerUser(userData) {
-  return instance.post(`${authURL}/signup`, userData);
+  return auth.post('signup', userData);
 }
 
 // 로그인 API
 function loginUser(userData) {
-  return instance.post(`${authURL}/login`, userData);
+  return auth.post('login', userData);
 }
 
-export { registerUser, loginUser };
+// 로그아웃 API
+function logoutUser() {
+  return auth.post('logout');
+}
+
+export { registerUser, loginUser, logoutUser };

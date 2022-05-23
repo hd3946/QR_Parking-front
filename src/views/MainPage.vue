@@ -21,7 +21,6 @@
 //import PostListItem from '@/components/posts/PostListItem.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 import ProfileInfo from '@/components/contacts/ProfileInfo.vue';
-import { fetchPosts } from '@/api/posts';
 
 export default {
   components: {
@@ -38,9 +37,8 @@ export default {
   methods: {
     async fetchData() {
       this.isLoading = true;
-      const { data } = await fetchPosts();
+      //const { data } = await fetchPosts();
       this.isLoading = false;
-      this.postItems = data.posts;
     },
   },
   created() {},

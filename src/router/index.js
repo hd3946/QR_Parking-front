@@ -26,6 +26,7 @@ export default new VueRouter({
       path: '/makeqr',
       component: () => import('@/views/MakeQRPage.vue'),
     },
+    //상대방 프로필
     {
       path: '/:id/profile',
       component: () => import('@/views/ProfilePage.vue'),
@@ -33,6 +34,11 @@ export default new VueRouter({
     {
       path: '/:id/signup',
       component: () => import('@/views/RegisterQRPage.vue'),
+    },
+    //나의 프로필
+    {
+      path: '/myProfile',
+      component: () => import('@/views/MyProfilePage.vue'),
     },
     // {
     //   path: '/post/:id',

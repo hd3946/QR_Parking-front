@@ -9,7 +9,7 @@ import {
   saveQRurlToCookie,
   deleteCookie,
 } from '@/utils/cookies';
-import { loginUser } from '@/api/auth';
+import { loginUser, logoutUser } from '@/api/auth';
 
 Vue.use(Vuex);
 
@@ -25,6 +25,9 @@ export default new Vuex.Store({
     isLogin(state) {
       return state.username !== '';
     },
+    getUser(state) {
+      return state.username;
+    },
   },
   mutations: {
     setUsername(state, username) {
@@ -35,7 +38,7 @@ export default new Vuex.Store({
     },
     setQRurl(state, qrurl) {
       state.qrurl = qrurl;
-      saveQRurlToCookie(qrurl);
+      //saveQRurlToCookie(qrurl);
     },
     setUserInfo(state, user) {
       state.userinfo = user;
@@ -60,11 +63,15 @@ export default new Vuex.Store({
     async LOGIN({ commit }, userData) {
       const { data } = await loginUser(userData);
       console.log(data);
-      //commit('setToken', data.token);
+      commit('setToken', data.token);
       commit('setUsername', data.user);
-      //saveAuthToCookie(data.token);
+      saveAuthToCookie(data.token);
       saveUserToCookie(data.user);
       return data;
+    },
+    async LOGOUT({ commit }) {
+      await logoutUser();
+      commit('clearUsername');
     },
   },
 });

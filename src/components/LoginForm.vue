@@ -14,11 +14,11 @@
           <b-form-input
             id="id"
             type="text"
-            v-model="username"
+            v-model="email"
             placeholder="계정 이메일"
           />
           <p class="validation-text">
-            <span class="warning" v-if="!isUsernameValid && username">
+            <span class="warning" v-if="!isUsernameValid && email">
               Please enter an email address
             </span>
           </p>
@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       // form values
-      username: '',
+      email: '',
       password: '',
       // log
       logMessage: '',
@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     isUsernameValid() {
-      return validateEmail(this.username);
+      return validateEmail(this.email);
     },
   },
   methods: {
@@ -79,11 +79,11 @@ export default {
       try {
         // 비즈니스 로직
         const userData = {
-          emailid: this.username,
+          emailid: this.email,
           password: this.password,
         };
         await this.$store.dispatch('LOGIN', userData);
-        this.$router.push('/main');
+        this.$router.push('/myProfile');
       } catch (error) {
         // 에러 핸들링할 코드
         console.log(error.response.data);
@@ -93,7 +93,7 @@ export default {
       }
     },
     initForm() {
-      this.username = '';
+      this.email = '';
       this.password = '';
     },
   },

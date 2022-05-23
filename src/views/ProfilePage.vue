@@ -4,7 +4,6 @@
     <div v-else>
       <ProfileInfo :userData="userData" @refresh="fetchData"></ProfileInfo>
     </div>
-    <hr />
   </div>
 </template>
 
@@ -12,6 +11,7 @@
 import ProfileInfo from '@/components/contacts/ProfileInfo.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 import { seeProfile } from '@/api/qrprofile';
+import { checkMyprofile } from '@/api/user';
 
 export default {
   components: {
@@ -20,22 +20,46 @@ export default {
   },
   data() {
     return {
+      id: '',
       userData: [],
       isLoading: false,
     };
   },
   methods: {
+    setMessage(text) {
+      if (text != '') this.message = `${text}차량좀 빼주시겠어용~💕`;
+      else this.message = '차좀 빼주시겠어용~💕';
+    },
+    async CheckUandI() {
+      //유저등록된 상태
+      if (this.userData.exist) {
+        this.setMessage(this.userData.user.carnumber);
+        this.$store.commit('setUserInfo', this.userData.user);
+        if (this.$store.getters.isLogin) {
+          const { data } = await checkMyprofile(this.id);
+          console.log('check-profile', data);
+          if (data.status) {
+            this.$router.push(`/myProfile`);
+          }
+        }
+      } else {
+        //유저등록안된 상태 => 유저등록화면
+        this.$router.push(`/signup`);
+      }
+    },
     async fetchData() {
       this.isLoading = true;
-      const id = this.$route.params.id;
-      this.$store.commit('setQRurl', id);
-      const { data } = await seeProfile(id);
-      this.isLoading = false;
+      this.id = this.$route.params.id;
+      this.$store.commit('setQRurl', this.id);
+      const { data } = await seeProfile(this.id);
       this.userData = data;
+      this.isLoading = false;
     },
   },
-  async created() {
+
+  created() {
     this.fetchData();
+    this.CheckUandI();
   },
 };
 </script>

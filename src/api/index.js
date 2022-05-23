@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { setInterceptors } from './common/interceptors';
 
-axios.defaults.baseURL = 'https://qrparking.herokuapp.com/';
+axios.defaults.withCredentials = true; // in the frontend
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
@@ -20,6 +20,8 @@ function createInstanceWithAuth(url) {
 }
 
 export const instance = createInstance();
+export const auth = createInstanceWithAuth('auth');
+export const user = createInstanceWithAuth('user');
 export const posts = createInstanceWithAuth('posts');
-export const qrprofile = createInstanceWithAuth('qr');
+export const qr = createInstanceWithAuth('qr');
 export const verify = createInstanceWithAuth('verify');

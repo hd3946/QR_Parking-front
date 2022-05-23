@@ -30,8 +30,8 @@ export default {
     },
   },
   methods: {
-    logoutUser() {
-      this.$store.commit('clearUsername');
+    async logoutUser() {
+      await this.$store.dispatch('LOGOUT');
       this.$router.push('/login');
     },
   },

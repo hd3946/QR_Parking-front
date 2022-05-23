@@ -7,7 +7,7 @@ function saveUserToCookie(value) {
 }
 
 function saveQRurlToCookie(value) {
-  document.cookie = `til_QRurl=${value}`;
+  document.cookie = `til_qr=${value}`;
 }
 
 function getAuthFromCookie() {
@@ -26,13 +26,13 @@ function getUserFromCookie() {
 
 function getQRurlFromCookie() {
   return document.cookie.replace(
-    /(?:(?:^|.*;\s*)til_user\s*=\s*([^;]*).*$)|^.*$/,
+    /(?:(?:^|.*;\s*)til_qr\s*=\s*([^;]*).*$)|^.*$/,
     '$1',
   );
 }
 
 function deleteCookie(value) {
-  document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+  document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`; //
 }
 
 export {
