@@ -62,6 +62,7 @@ export default new Vuex.Store({
   actions: {
     async LOGIN({ commit }, userData) {
       const { data } = await loginUser(userData);
+      console.log('왜이러지?', data);
       console.log(data);
       commit('setToken', data.token);
       commit('setUsername', data.user);
