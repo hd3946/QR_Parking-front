@@ -2,6 +2,7 @@ import axios from 'axios';
 import { setInterceptors } from './common/interceptors';
 
 axios.defaults.withCredentials = true; // in the frontend
+axios.defaults.baseURL = process.env.VUE_APP_API_URL; //서버주소
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
