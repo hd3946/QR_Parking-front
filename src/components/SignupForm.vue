@@ -179,7 +179,6 @@ export default {
         this.verifyhide = true;
         this.logMessage = '휴대폰 번호 error 발생';
       }
-      this.verifyhide = false;
     },
     //서버로 인증번호 전송
     async submitSendVerifyCheck() {
@@ -194,7 +193,6 @@ export default {
         this.verifycheck = false;
         this.logMessage = '인증 error 발생';
       }
-      this.verifycheck = true;
     },
     async submitForm() {
       if (this.password !== this.confirmPassword) {
