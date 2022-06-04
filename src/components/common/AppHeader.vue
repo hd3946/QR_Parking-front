@@ -2,7 +2,7 @@
   <header>
     <div>
       <router-link to="/" class="logo">
-        노-브레이끼
+        노-브레끼
         <span v-if="isUserLogin">by {{ $store.state.username }}</span>
       </router-link>
     </div>

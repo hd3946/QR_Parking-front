@@ -71,7 +71,7 @@
         </div>
       </form>
 
-      <div class="input-group input-group-lg mb-3" :disabled="verifycheck">
+      <div class="input-group input-group-lg mb-3">
         <span class="input-group-text" id="basic-addon1">
           <b-icon icon="phone"></b-icon>
         </span>
@@ -83,6 +83,7 @@
           aria-label="Username"
           aria-describedby="basic-addon1"
           :style="[!verifycheck ? onPhoneClass : outPhoneClass]"
+          :disabled="verifycheck"
           v-model="phonenumber"
         />
         <button
@@ -94,17 +95,14 @@
         </button>
       </div>
 
-      <div
-        class="input-group input-group-lg mb-3"
-        :hidden="verifyhide"
-        :disabled="verifycheck"
-      >
+      <div class="input-group input-group-lg mb-3" :hidden="verifyhide">
         <input
           type="text"
           class="form-control"
           placeholder="인증 번호"
           aria-describedby="basic-addon1"
           v-model="verificationcode"
+          :disabled="verifycheck"
         />
         <button
           type="submit"
@@ -148,9 +146,9 @@ export default {
       //verify
       verifyhide: true,
       verificationcode: '',
-      verifycheck: true,
+      verifycheck: false,
       onPhoneClass: { color: 'pink' },
-      outPhoneClass: { color: 'red' },
+      outPhoneClass: { color: '#808080' },
     };
   },
   computed: {
@@ -158,18 +156,30 @@ export default {
       return validateEmail(this.emailid);
     },
   },
+  watch: {
+    // phonenumber: function (newQuestion) {
+    //   console.log('test', this.phonenumber);
+    // },
+  },
   methods: {
     //서버로 휴대폰번호 전송 인증번호받기
     async submitReceiveVerify() {
+      console.log('test', this.phonenumber.length);
+      if (this.phonenumber == '' || this.phonenumber.length != 11) {
+        alert('휴대폰 번호 에러 :', this.phonenumber);
+        return;
+      }
       const userData = {
         phonenumber: this.phonenumber,
       };
-      const status = await receiveVerify(userData);
-      if (status) {
+      const { data } = await receiveVerify(userData);
+      if (data) {
         this.verifyhide = false;
       } else {
+        this.verifyhide = true;
         this.logMessage = '휴대폰 번호 error 발생';
       }
+      this.verifyhide = false;
     },
     //서버로 인증번호 전송
     async submitSendVerifyCheck() {
@@ -177,12 +187,14 @@ export default {
         phonenumber: this.phonenumber,
         verificationcode: this.verificationcode,
       };
-      const status = await sendVerifyCheck(userData);
-      if (status) {
+      const { data } = await sendVerifyCheck(userData);
+      if (data) {
         this.verifycheck = true;
       } else {
+        this.verifycheck = false;
         this.logMessage = '인증 error 발생';
       }
+      this.verifycheck = true;
     },
     async submitForm() {
       if (this.password !== this.confirmPassword) {
@@ -191,6 +203,10 @@ export default {
       }
       if (!this.verifycheck) {
         this.logMessage = '휴대폰 인증을 해주세요~!';
+        return;
+      }
+      if (this.nickname != '') {
+        this.logMessage = '닉네임을 입력해주세요~!';
         return;
       }
       const userData = {
