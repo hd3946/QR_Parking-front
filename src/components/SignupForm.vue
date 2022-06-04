@@ -148,7 +148,7 @@ export default {
       //verify
       verifyhide: true,
       verificationcode: '',
-      verifycheck: false,
+      verifycheck: true,
       onPhoneClass: { color: 'pink' },
       outPhoneClass: { color: 'red' },
     };
@@ -174,6 +174,7 @@ export default {
     //서버로 인증번호 전송
     async submitSendVerifyCheck() {
       const userData = {
+        phonenumber: this.phonenumber,
         verificationcode: this.verificationcode,
       };
       const status = await sendVerifyCheck(userData);
@@ -188,7 +189,7 @@ export default {
         this.logMessage = 'Password does not match.';
         return;
       }
-      if (this.verifycheck) {
+      if (!this.verifycheck) {
         this.logMessage = '휴대폰 인증을 해주세요~!';
         return;
       }

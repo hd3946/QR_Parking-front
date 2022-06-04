@@ -10,11 +10,11 @@
 <script>
 import ProfileInfo from '@/components/contacts/ProfileInfo.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
-// import { seeProfile } from '@/api/qrprofile';
+import { receiveMyprofile } from '@/api/user';
 
 export default {
   components: {
-    // ProfileInfo,
+    ProfileInfo,
     LoadingSpinner,
   },
   data() {
@@ -27,10 +27,10 @@ export default {
     async fetchData() {
       this.isLoading = true;
       const id = this.$store.getters.getUser;
-      console.log('나의계정 id', id);
-      //const { data } = await seeProfile(id);
+      const { data } = await receiveMyprofile(id);
+      console.log('mypage', data);
       this.isLoading = false;
-      //this.userData = data;
+      this.userData = data;
     },
   },
 

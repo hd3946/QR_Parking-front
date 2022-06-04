@@ -1,23 +1,17 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import {
-  getAuthFromCookie,
-  getUserFromCookie,
-  getQRurlFromCookie,
-  saveAuthToCookie,
-  saveUserToCookie,
-  saveQRurlToCookie,
-  deleteCookie,
-} from '@/utils/cookies';
 import { loginUser, logoutUser } from '@/api/auth';
 
+Vue.use(require('vue-cookies'));
 Vue.use(Vuex);
+
+const cookieUser = 'til_user';
+const cookieAuth = 'til_auth';
 
 export default new Vuex.Store({
   state: {
-    username: getUserFromCookie() || '',
-    qrurl: getQRurlFromCookie() || '',
-    token: getAuthFromCookie() || '',
+    username: $cookies.get(cookieUser) || '',
+    token: $cookies.get(cookieAuth) || '',
     userinfo: {},
     SMS_Messages: '',
   },
@@ -38,7 +32,6 @@ export default new Vuex.Store({
     },
     setQRurl(state, qrurl) {
       state.qrurl = qrurl;
-      //saveQRurlToCookie(qrurl);
     },
     setUserInfo(state, user) {
       state.userinfo = user;
@@ -51,9 +44,8 @@ export default new Vuex.Store({
     },
     //쿠키제거 확인필요~!
     clearUsername(state) {
-      deleteCookie(getAuthFromCookie() || '');
-      deleteCookie(getUserFromCookie() || '');
-      deleteCookie(getQRurlFromCookie() || '');
+      $cookies.remove(cookieAuth);
+      $cookies.remove(cookieUser);
       state.username = '';
       state.token = '';
       state.qrurl = '';
@@ -62,12 +54,11 @@ export default new Vuex.Store({
   actions: {
     async LOGIN({ commit }, userData) {
       const { data } = await loginUser(userData);
-      console.log('왜이러지?', data);
       console.log(data);
       commit('setToken', data.token);
       commit('setUsername', data.user);
-      saveAuthToCookie(data.token);
-      saveUserToCookie(data.user);
+      $cookies.set(cookieAuth, data.token);
+      $cookies.set(cookieUser, data.user);
       return data;
     },
     async LOGOUT({ commit }) {

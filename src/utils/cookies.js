@@ -1,38 +1,46 @@
 function saveAuthToCookie(value) {
-  document.cookie = `til_auth=${value}`;
+  this.$cookies.set(til_auth, value);
+  //document.cookie = `til_auth=${value}`;
 }
 
 function saveUserToCookie(value) {
-  document.cookie = `til_user=${value}`;
+  this.$cookies.set(til_user, value);
+  //document.cookie = `til_user=${value}`;
 }
 
 function saveQRurlToCookie(value) {
-  document.cookie = `til_qr=${value}`;
+  this.$cookies.set(til_qr, value);
+  //document.cookie = `til_qr=${value}`;
 }
 
 function getAuthFromCookie() {
-  return document.cookie.replace(
-    /(?:(?:^|.*;\s*)til_auth\s*=\s*([^;]*).*$)|^.*$/,
-    '$1',
-  );
+  //const cookie = $cookies.get(til_auth);
+  //return cookie;
+  // return document.cookie.replace(
+  //   /(?:(?:^|.*;\s*)til_auth\s*=\s*([^;]*).*$)|^.*$/,
+  //   '$1',
+  // );
 }
 
 function getUserFromCookie() {
-  return document.cookie.replace(
-    /(?:(?:^|.*;\s*)til_user\s*=\s*([^;]*).*$)|^.*$/,
-    '$1',
-  );
+  //return [this | Vue].$cookies.get(til_user);
+  // return document.cookie.replace(
+  //   /(?:(?:^|.*;\s*)til_user\s*=\s*([^;]*).*$)|^.*$/,
+  //   '$1',
+  // );
 }
 
 function getQRurlFromCookie() {
-  return document.cookie.replace(
-    /(?:(?:^|.*;\s*)til_qr\s*=\s*([^;]*).*$)|^.*$/,
-    '$1',
-  );
+  //return this.$cookies.get(til_qr);
+  // return document.cookie.replace(
+  //   /(?:(?:^|.*;\s*)til_qr\s*=\s*([^;]*).*$)|^.*$/,
+  //   '$1',
+  // );
 }
 
 function deleteCookie(value) {
-  document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`; //
+  //this.$cookies.remove(value);
+  //document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
 export {
