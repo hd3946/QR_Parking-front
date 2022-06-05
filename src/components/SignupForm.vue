@@ -211,7 +211,7 @@ export default {
         this.logMessage = '휴대폰 인증을 해주세요~!';
         return;
       }
-      if (this.nickname != '') {
+      if (this.nickname == '') {
         this.logMessage = '닉네임을 입력해주세요~!';
         return;
       }
