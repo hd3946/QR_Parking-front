@@ -221,7 +221,7 @@ export default {
         nickname: this.nickname,
         phonenumber: this.phonenumber,
         carnumber: this.carnumber,
-        qrurl: this.$store.state.qrurl,
+        qrurl: this.$route.params.id,
       };
       console.log('회원가입 페이지', userData.qrurl);
       const { data } = await registerUser(userData);
