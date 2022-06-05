@@ -182,6 +182,14 @@ export default {
     },
     //서버로 인증번호 전송
     async submitSendVerifyCheck() {
+      if (this.phonenumber == '' || this.phonenumber.length != 11) {
+        alert('휴대폰 번호 에러 :', this.phonenumber);
+        return;
+      }
+      if (this.verificationcode == '') {
+        alert('인증 번호 에러 :', this.phonenumber);
+        return;
+      }
       const userData = {
         phonenumber: this.phonenumber,
         verificationcode: this.verificationcode,
