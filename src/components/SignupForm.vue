@@ -151,6 +151,9 @@ export default {
       outPhoneClass: { color: '#808080' },
     };
   },
+  created() {
+    console.log('회원가입 페이지', this.$store.state.qrurl);
+  },
   computed: {
     isUsernameValid() {
       return validateEmail(this.emailid);
@@ -221,9 +224,8 @@ export default {
         nickname: this.nickname,
         phonenumber: this.phonenumber,
         carnumber: this.carnumber,
-        qrurl: this.$route.params.id,
+        qrurl: this.$store.state.qrurl,
       };
-      console.log('회원가입 페이지', userData.qrurl);
       const { data } = await registerUser(userData);
       this.logMessage = `${data.user} 님이 가입되었습니다`;
       this.initForm();
