@@ -31,6 +31,7 @@ export default {
       else this.message = '차좀 빼주시겠어용~💕';
     },
     async CheckUandI() {
+      console.log('데이터확인', this.userData.exist);
       //유저등록된 상태
       if (this.userData.exist) {
         this.setMessage(this.userData.user.carnumber);
