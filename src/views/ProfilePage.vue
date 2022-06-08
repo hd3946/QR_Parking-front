@@ -55,12 +55,12 @@ export default {
       const { data } = await seeProfile(this.id);
       this.userData = data;
       this.isLoading = false;
+      await this.CheckUandI();
     },
   },
 
   created() {
     this.fetchData();
-    this.CheckUandI();
   },
 };
 </script>
