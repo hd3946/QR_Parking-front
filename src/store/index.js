@@ -1,52 +1,70 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { loginUser, logoutUser } from '@/api/auth';
+import { receiveMyprofile } from '@/api/user';
 
 Vue.use(require('vue-cookies'));
 Vue.use(Vuex);
 
 const cookieUser = 'til_user';
-const cookieAuth = 'til_auth';
+const cookieToken = 'til_token';
 
 export default new Vuex.Store({
   state: {
-    username: $cookies.get(cookieUser) || '',
-    token: $cookies.get(cookieAuth) || '',
-    userinfo: {},
+    user: $cookies.get(cookieUser) || '', //로그인 유저
+    token: $cookies.get(cookieToken) || '',
+    OtherUser: '',
+    snsId: '',
+    carnumber: '',
+    phonenumber: '',
+    profileurl: '',
     SMS_Messages: '',
   },
   getters: {
     isLogin(state) {
-      return state.username !== '';
+      return state.user !== '';
+    },
+    isReceiveApi(state) {
+      return state.phonenumber === '';
     },
     getUser(state) {
-      return state.username;
+      return state.user;
     },
   },
   mutations: {
-    setUsername(state, username) {
-      state.username = username;
+    setUser(state, user) {
+      state.user = user;
+      $cookies.set(cookieUser, user);
     },
     setToken(state, token) {
       state.token = token;
+      $cookies.set(cookieToken, token);
+    },
+    setSNSid(state, snsId) {
+      state.snsId = snsId;
+    },
+    setCarnumber(state, carnumber) {
+      state.carnumber = carnumber;
+    },
+    setPhonenumber(state, phonenumber) {
+      state.phonenumber = phonenumber;
+    },
+    setProfileurl(state, profileurl) {
+      state.profileurl = profileurl;
     },
     setQRurl(state, qrurl) {
       state.qrurl = qrurl;
     },
-    setUserInfo(state, user) {
-      state.userinfo = user;
-    },
     setSMS(state, text) {
       if (text != '') {
-        state.SMS_Messages = text;
-        //state.SMS_Messages += `${text}차량좀 빼주시겠어용~💕`;
       }
+      state.SMS_Messages = `${text}차량좀 빼주시겠어용~💕`;
     },
     //쿠키제거 확인필요~!
     clearUsername(state) {
-      $cookies.remove(cookieAuth);
+      $cookies.remove(cookieToken);
       $cookies.remove(cookieUser);
-      state.username = '';
+      state.user = '';
       state.token = '';
       state.qrurl = '';
     },
@@ -54,16 +72,20 @@ export default new Vuex.Store({
   actions: {
     async LOGIN({ commit }, userData) {
       const { data } = await loginUser(userData);
-      console.log(data);
       commit('setToken', data.token);
-      commit('setUsername', data.user);
-      $cookies.set(cookieAuth, data.token);
-      $cookies.set(cookieUser, data.user);
-      return data;
+      commit('setUser', data.user);
     },
     async LOGOUT({ commit }) {
-      await logoutUser();
       commit('clearUsername');
+      await logoutUser();
+    },
+    async RECEIVEOTHER({ commit }) {
+      // const { data } = await receiveMyprofile();
+      // commit('OtherUser', data);
+      // commit('setSNSid', data.user.snsId);
+      // commit('setCarnumber', data.user.carnumber);
+      // commit('setPhonenumber', data.user.phonenumber);
+      // commit('setProfileurl', data.user.profileurl);
     },
   },
 });

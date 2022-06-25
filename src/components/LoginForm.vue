@@ -9,7 +9,7 @@
           />
         </router-link>
       </div>
-      <form @submit.prevent="submitForm" class="form">
+      <form v-if="!isUserLogin" @submit.prevent="submitForm" class="form">
         <div>
           <b-form-input
             id="id"
@@ -70,6 +70,9 @@ export default {
     };
   },
   computed: {
+    isUserLogin() {
+      return this.$store.getters.isLogin;
+    },
     isUsernameValid() {
       return validateEmail(this.email);
     },
@@ -86,8 +89,8 @@ export default {
         this.$router.push('/myProfile');
       } catch (error) {
         // 에러 핸들링할 코드
-        console.log(error.response.data);
-        this.logMessage = error.response.data;
+        //console.log(error.response.data);
+        //this.logMessage = error.response.data;
       } finally {
         this.initForm();
       }

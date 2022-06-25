@@ -3,12 +3,19 @@
     <div>
       <router-link to="/" class="logo">
         노-브레끼
-        <span v-if="isUserLogin">by {{ $store.state.username }}</span>
+        <span v-if="isUserLogin">by {{ getUserNickname }}</span>
       </router-link>
     </div>
     <div class="navigations">
       <!-- 1 -->
       <template v-if="isUserLogin">
+        <b-icon
+          icon="plus-square"
+          @click="PostForm"
+          font-scale="2"
+          style="color: black"
+        ></b-icon>
+        <b-avatar v-bind:src="getUserProfileUrl" size="2rem" />
         <a href="javascript:;" @click="logoutUser" class="logout-button">
           Logout
         </a>
@@ -18,15 +25,27 @@
         <router-link to="/login">로그인</router-link>
         <router-link to="/signup">회원가입</router-link>
       </template>
+      <div><ModalPost /></div>
     </div>
   </header>
 </template>
 
 <script>
+import ModalPost from '@/components/common/ModalPostForm';
+
 export default {
+  components: {
+    ModalPost,
+  },
   computed: {
     isUserLogin() {
       return this.$store.getters.isLogin;
+    },
+    getUserNickname() {
+      return this.$store.getters.getUser.nickname;
+    },
+    getUserProfileUrl() {
+      return this.$store.getters.getUser.profileurl;
     },
   },
   methods: {
@@ -34,14 +53,14 @@ export default {
       await this.$store.dispatch('LOGOUT');
       this.$router.push('/login');
     },
+    PostForm() {
+      this.$bvModal.show('modal-Post');
+    },
   },
 };
 </script>
 
 <style scoped>
-.username {
-  color: black;
-}
 header {
   display: flex;
   justify-content: space-between;

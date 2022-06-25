@@ -2,15 +2,15 @@
   <div>
     <LoadingSpinner v-if="isLoading"></LoadingSpinner>
     <div v-else>
-      <ProfileInfo :userData="userData" @refresh="fetchData"></ProfileInfo>
+      <ProfileInfo :youorme="youorme" @refresh="fetchData"></ProfileInfo>
     </div>
   </div>
 </template>
 
 <script>
-import ProfileInfo from '@/components/contacts/ProfileInfo.vue';
+import ProfileInfo from '@/components/common/ProfileInfo.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
-import { seeProfile } from '@/api/qrprofile';
+import { findUser, seeProfile } from '@/api/qrprofile';
 import { checkMyprofile } from '@/api/user';
 
 export default {
@@ -21,25 +21,22 @@ export default {
   data() {
     return {
       id: '',
-      userData: [],
+      youorme: false,
       isLoading: false,
     };
   },
   methods: {
-    setMessage(text) {
-      if (text != '') this.message = `${text}차량좀 빼주시겠어용~💕`;
-      else this.message = '차좀 빼주시겠어용~💕';
+    async findUser() {
+      const { data } = await findUser(this.id);
+      console.log('새로만들기', data);
     },
     async CheckUandI() {
-      console.log('데이터확인', this.userData.exist);
       //유저등록된 상태
       if (this.userData.exist) {
-        this.setMessage(this.userData.user.carnumber);
-        this.$store.commit('setUserInfo', this.userData.user);
         if (this.$store.getters.isLogin) {
           const { data } = await checkMyprofile(this.id);
           console.log('check-profile', data);
-          if (data.status) {
+          if (data.youorme) {
             this.$router.push(`/myProfile`);
           }
         }
@@ -53,14 +50,18 @@ export default {
       this.id = this.$route.params.id;
       this.$store.commit('setQRurl', this.id);
       const { data } = await seeProfile(this.id);
-      this.userData = data;
+      this.userData = data.user;
       this.isLoading = false;
-      await this.CheckUandI();
     },
   },
 
-  created() {
-    this.fetchData();
+  async created() {
+    this.isLoading = true;
+    this.id = this.$route.params.id;
+    await this.findUser();
+    this.isLoading = false;
+    //await this.fetchData();
+    //await this.CheckUandI();
   },
 };
 </script>

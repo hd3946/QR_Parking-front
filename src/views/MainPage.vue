@@ -20,7 +20,7 @@
 <script>
 //import PostListItem from '@/components/posts/PostListItem.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
-import ProfileInfo from '@/components/contacts/ProfileInfo.vue';
+import ProfileInfo from '@/components/common/ProfileInfo.vue';
 
 export default {
   components: {

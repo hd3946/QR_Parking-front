@@ -6,8 +6,13 @@ function makeQR(userData) {
 }
 
 // QRURl에 해당하는 유저 조회 API
+function findUser(hashUrl) {
+  return qr.get(hashUrl + '/finduser');
+}
+
+// QRURl에 해당하는 유저 조회 API
 function seeProfile(hashUrl) {
   return qr.get(hashUrl + '/profile');
 }
 
-export { makeQR, seeProfile };
+export { makeQR, findUser, seeProfile };

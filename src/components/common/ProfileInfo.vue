@@ -1,35 +1,29 @@
 <template>
   <div class="contents">
     <div class="row my-3 align-items-center">
-      <div class="col-4" @click="clickProfile()">
-        <img
-          v-bind:src="profileImage"
-          class="profile-img"
-          alt="hello"
+      <div class="col-4 mb-2" @click="clickProfile()">
+        <b-avatar
+          v-bind:src="user.profileurl !== '' ? user.profileurl : ''"
           @error="replaceByDefault"
-        />
-        <input
-          class="form-control"
-          type="file"
-          id="imageUpload"
-          ref="selectFile"
-          accept="image/*"
-          @change="fileUpload($event)"
-          hidden
-        />
+          size="6rem"
+        ></b-avatar>
       </div>
       <div class="col-auto">
-        <h4 class="font-weight-bold">{{ userData.user.nickname }} 님의 계정</h4>
+        <h4 class="font-weight-bold">{{ user.nickname }} 님의 계정</h4>
         <p class="fs-6">안녕하세요~</p>
       </div>
       <div class="col-auto">
         <button type="button" class="btn btn-outline-primary my-2 my-sm-0">
           프로필 편집
         </button>
+        <b-button size="sm" variant="primary" class="mb-2">
+          <b-icon icon="gear-fill" aria-hidden="true"></b-icon> Settings
+        </b-button>
       </div>
+      <div>게시글 팔로워 팔로우</div>
     </div>
     <hr />
-    <div class="row" :hidden="youAndme">
+    <div class="row" :hidden="youorme">
       <div class="col text-center" @click="callUser()">
         <h6 class="font-weight-bold">통화</h6>
         <img
@@ -59,10 +53,10 @@
 
 <script>
 import errorimg from '@/assets/ddd.jpg';
-import ModalSMS from '@/components/common/ModalSMS';
-import ModalImage from '@/components/common/ModalProfileImage';
-import { checkMyprofile } from '@/api/user';
-import { PostUserProfile } from '@/api/posts';
+import ModalSMS from '@/components/common/ModalSMSForm';
+import ModalImage from '@/components/common/ModalProfileForm';
+// import { checkMyprofile } from '@/api/user';
+// import { PostUserProfile } from '@/api/posts';
 
 export default {
   components: {
@@ -70,8 +64,13 @@ export default {
     ModalImage,
   },
   props: {
-    userData: {
+    user: {
       type: Object,
+      require: true,
+    },
+    // check me, other
+    youorme: {
+      type: Boolean,
       required: true,
     },
   },
@@ -79,49 +78,17 @@ export default {
     return {
       // 메시지 전달
       message: '',
-      // check me, other
-      youAndme: false,
       // log
       logMessage: '',
       // loading
       isLoading: false,
-      // 프로필이미지
-      profileImage: '',
     };
   },
   methods: {
-    async fileUpload() {
-      // 선택된 파일이 있는가?
-      if (0 < this.$refs.selectFile.files.length) {
-        // 0 번째 파일을 가져 온다.
-        this.selectFile = this.$refs.selectFile.files[0];
-        // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-        let fileExt = this.selectFile.name.substring(
-          this.selectFile.name.lastIndexOf('.') + 1,
-        );
-        // 소문자로 변환
-        fileExt = fileExt.toLowerCase();
-        // 이미지 확장자 체크, 5메가 바이트 이하 인지 체크 && this.selectFile.size <= 15 * 1024 * 1024
-        if (['jpeg', 'png', 'gif', 'bmp'].includes(fileExt)) {
-        } else {
-          alert('파일을 다시 선택해 주세요.');
-          this.selectFile = null;
-          return;
-        }
-        await PostUserProfile(this.selectFile);
-        //const { data } = await PostUserProfile(this.selectFile);
-        //console.log('test', data);
-        //this.profileImage = data.url;
-        //this.$router.push(`/`);
-      } else {
-        // 파일을 선택하지 않았을때
-        this.selectFile = null;
-      }
-    },
     clickProfile() {
       if (this.$store.getters.isLogin) {
         try {
-          if (this.youAndme) {
+          if (this.youorme) {
             //나의 프로필
             this.$bvModal.show('modal-profileimage');
           } else {
@@ -133,12 +100,11 @@ export default {
         }
       } else {
         //test 중
-        document.getElementById('imageUpload').click();
+        //document.getElementById('imageUpload').click();
       }
     },
-
     callUser() {
-      document.location.href = `tel:${this.userData.user.phonenumber}`;
+      document.location.href = `tel:${this.user.phonenumber}`;
     },
     sendSMS() {
       if (this.isLoading) this.$bvModal.show('modal-sms');
@@ -152,13 +118,7 @@ export default {
     },
   },
   async created() {
-    this.youAndme = this.userData.status;
     this.isLoading = true;
-
-    //프로필 사진 존재 확인
-    if (this.userData.user.profileUrl) {
-      this.profileImage = this.userData.user.profileUrl;
-    }
   },
 };
 </script>
@@ -166,10 +126,6 @@ export default {
 <style>
 .img-thumbnail {
   border: 0px;
-}
-.page-profile {
-  padding: 20px;
-  height: 200px;
 }
 .profile-header-id {
   font-size: 35px;
