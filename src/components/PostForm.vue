@@ -1,6 +1,11 @@
 <template>
   <div>
-    <b-container fluid class="p-1 bg-dark">
+    <b-container
+      ref="notification-list"
+      @scroll="handleNotificationListScroll"
+      fluid
+      class="p-1 bg-dark"
+    >
       <b-row>
         <b-col v-for="작명 in 메뉴들" :key="작명" class="col-4">
           <b-img-lazy
@@ -28,7 +33,7 @@
         <b-icon icon="suit-heart" style="color: red"></b-icon>
         <b-icon icon="chat-text" style="color: black"></b-icon>
         <b-icon icon="share-fill" style="color: black"></b-icon>
-      </p> -->
+    </p> -->
 </template>
 
 <script>
@@ -64,10 +69,53 @@ export default {
     };
   },
   async created() {
+    window.addEventListener('scroll', this.handleNotificationListScroll);
     // const { data } = await searchUserPost();
     // console.log('포스트 가져오기', data.url);
     //this.메뉴들[12] = data.url;
     //console.log('ㅇ', this.메뉴들);
+  },
+  methods: {
+    // 무한 스크롤 정의
+    handleNotificationListScroll(e) {
+      console.log('스크롤 실행');
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      // 일정 한도 밑으로 내려오면 함수 실행
+      if (isAtTheBottom) this.handleLoadMore();
+    },
+
+    // 내려오면 api 호출하여 아래에 더 추가, total값 최대이면 호출 안함
+    handleLoadMore() {
+      if (this.notifications.length < this.total) {
+        const params = {
+          limit: this.params.limit,
+          page: this.params.page + 1,
+        };
+        console.log('이거머임', params);
+        // this.$store.commit(
+        //   'notification/SET_PARAMS',
+        //   this.filterValue ? { ...params, type: this.filterValue } : params,
+        // );
+        this.dispatchGetNotifications(false);
+      }
+    },
+
+    // 스크롤을 맨위로 올리고 싶을 때
+    handleClickTitle() {
+      this.$refs['notification-list'].scroll({ top: 0, behavior: 'smooth' });
+    },
+
+    // 새로고침
+    handleClickRefresh() {
+      this.$refs['notification-list'].scroll({ top: 0 });
+      this.dispatchGetNotifications(true);
+    },
+
+    // 처음 렌더링시 이전 알림 불러오기 or reset=true시 새로고침, false시 이전 목록에 추가
+    dispatchGetNotifications(reset) {
+      this.$store.dispatch('notification/getNotifications', reset);
+    },
   },
 };
 </script>

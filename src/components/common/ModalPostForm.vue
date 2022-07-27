@@ -42,11 +42,11 @@ export default {
       const { data } = await createPostUser(selectFile);
       if (data.status) {
         alert('업로드 성공');
-        this.$router.push('/myProfile');
+        //this.$router.push('/myProfile');
       } else {
         alert('에러 발생');
       }
-      //close();
+      this.$bvModal.hide('modal-Post');
     },
   },
 };

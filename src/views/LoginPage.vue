@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="page-header">QR_Parking</h1>
+    <h1 class="page-header">Login_Page</h1>
     <LoginForm></LoginForm>
   </div>
 </template>

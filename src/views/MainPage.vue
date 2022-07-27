@@ -1,14 +1,6 @@
 <template>
   <div>
     <!-- <LoadingSpinner v-if="isLoading"></LoadingSpinner> -->
-    <!-- <ul>
-        <PostListItem
-          v-for="postItem in postItems"
-          :key="postItem._id"
-          :postItem="postItem"
-          @refresh="fetchData"
-        ></PostListItem>
-      </ul> -->
     <ProfileInfo />
 
     <router-link to="/add" class="create-button">
@@ -18,14 +10,12 @@
 </template>
 
 <script>
-//import PostListItem from '@/components/posts/PostListItem.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
 import ProfileInfo from '@/components/common/ProfileInfo.vue';
 
 export default {
   components: {
     ProfileInfo,
-    // PostListItem,
     // LoadingSpinner,
   },
   data() {

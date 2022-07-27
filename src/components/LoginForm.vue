@@ -1,29 +1,15 @@
 <template>
-  <div class="contents">
+  <div>
     <div class="form-wrapper form-wrapper-sm">
-      <div class="image-wrapper">
-        <router-link to="/makeqr">
-          <img class="imgMain" src="../assets/sana.gif" alt="Main image" />
-          <img
-            src="https://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=http://0.0.0.0:8080/$2b$12$rbDCzUJMc88mID4ulkMNp.ZWViNfMXlR7ZmMn03dVW.I4ObbTlTe6/profile"
-          />
-        </router-link>
-      </div>
-      <form v-if="!isUserLogin" @submit.prevent="submitForm" class="form">
-        <div>
-          <b-form-input
-            id="id"
-            type="text"
-            v-model="email"
-            placeholder="계정 이메일"
-          />
-          <p class="validation-text">
-            <span class="warning" v-if="!isUsernameValid && email">
-              Please enter an email address
-            </span>
-          </p>
+      <router-link to="/makeqr" class="row justify-content-center gy-5">
+        <img class="col-4 p-3" src="../assets/sana.gif" alt="Main image" />
+      </router-link>
+      <form v-if="!isUserLogin" @submit.prevent="submitForm" class="row g-2">
+        <div class="col-12 p-1">
+          <b-form-input type="text" v-model="email" placeholder="계정 이메일" />
+          <p v-if="!isUsernameValid && email">Please enter an email address</p>
         </div>
-        <div>
+        <div class="col-12 p-1">
           <b-form-input
             id="password"
             type="text"
@@ -31,9 +17,9 @@
             placeholder="비밀번호"
           />
         </div>
-        <div>
+        <div class="col-12 p-1">
           <b-button
-            id="btnLogin"
+            class="w-100"
             variant="primary"
             :disabled="!isUsernameValid || !password"
             type="submit"
@@ -41,10 +27,10 @@
             로그인
           </b-button>
         </div>
-        <div class="kakao">
-          <button id="btnKaKao" type="submit">
+        <div class="row p-1 justify-content-center">
+          <button id="btnKaKao" class="col-4" type="submit">
             <img
-              class="img"
+              class="w-100"
               src="../assets/kakao_login_medium_wide.png"
               alt="카카오 로그인"
             />
@@ -104,27 +90,9 @@ export default {
 </script>
 
 <style>
-#btnLogin {
-  margin-top: 30px;
-  width: 100%;
-}
 #btnKaKao {
-  align-content: center;
-  margin-top: 30px;
   background: rgba(240, 230, 140, 0);
   border: 0;
   outline: 0;
-}
-.kakao {
-  align-content: center;
-  text-align: center;
-}
-.image-wrapper {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.imgMain {
-  width: 50%;
-  height: 50%;
 }
 </style>
